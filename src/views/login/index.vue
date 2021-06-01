@@ -60,6 +60,12 @@
 </template>
 <script>
 import { validUsername } from "@/utils/validata.js";
+// import axios from "axios";
+// import Vue from "vue";
+// Vue.prototype.$axios = axios;
+// axios.defaults.baseURL = "http://127.0.0.1:3000"; //配置接口地址
+// axios.defaults.timeout = 5000;
+import { login } from "@/api/user.js";
 export default {
   data() {
     var validateUsername = (rule, value, callback) => {
@@ -96,6 +102,9 @@ export default {
   methods: {
     handleLogin() {
       //点击登录
+      login(this.loginForm).then((res) => {
+        console.log(res);
+      });
     },
   },
 };
