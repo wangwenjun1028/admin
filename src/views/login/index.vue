@@ -65,7 +65,7 @@ import { validUsername } from "@/utils/validata.js";
 // Vue.prototype.$axios = axios;
 // axios.defaults.baseURL = "http://127.0.0.1:3000"; //配置接口地址
 // axios.defaults.timeout = 5000;
-import { login } from "@/api/user.js";
+import { login, getInfo } from "@/api/user.js";
 export default {
   data() {
     var validateUsername = (rule, value, callback) => {
@@ -102,14 +102,27 @@ export default {
   methods: {
     handleLogin() {
       //点击登录
-      login(this.loginForm).then((res) => {
-        console.log(res);
+      // login(this.loginForm).then((res) => {
+      //   console.log(res);
+      // });
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          this.$store.dispatch("user/login", this.loginForm).then((res) => {
+            console.log("请求成功");
+            getInfo("admin-token").then((res) => {
+              console.log(res);
+            });
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
       });
     },
   },
 };
 </script>
-<style scoped>
+<style scoped lang='less'>
 .login-container {
   width: 100%;
   height: 100%;
@@ -149,7 +162,7 @@ export default {
 .el-form-item .el-input {
   width: 85%;
 }
-.el-form-item .el-input >>> input {
+.el-form-item .el-input /deep/ input {
   border: none;
   outline: none;
 }
