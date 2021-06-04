@@ -109,9 +109,7 @@ export default {
         if (valid) {
           this.$store.dispatch("user/login", this.loginForm).then((res) => {
             console.log("请求成功");
-            getInfo("admin-token").then((res) => {
-              console.log(res);
-            });
+            this.$router.push("/layout");
           });
         } else {
           console.log("error submit!!");
