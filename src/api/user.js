@@ -14,7 +14,6 @@ export function login(data) {
  * params {string} role 角色
 */
 export function getInfo(role) {
-    console.log(role)
     return request({
         url: 'user/getUserInfos',
         method: 'get',

@@ -1,5 +1,5 @@
 import { getToken, setToken, removeToken } from '@/utils/validata.js';
-import { login } from '@/api/user.js'
+import { login, getInfo } from '@/api/user.js'
 
 const state = {
     token: getToken(),
@@ -7,6 +7,11 @@ const state = {
     avatar: '',
     introduction: '',
     roles: []
+}
+
+const getters = {
+    roles: state => state.roles,
+    avatar: state => state.avatar
 }
 
 const mutations = {
@@ -32,7 +37,6 @@ const actions = {
             const { username, password } = userinfo;
             login({ username: username.trim(), password: password.trim() }).then(response => {
                 // 请求成功的token存放客户端
-                console.log(commit)
                 commit('SET_TOKEN', response.data)
                 setToken(response.data);
                 resolve();
@@ -43,6 +47,20 @@ const actions = {
         })
     },
     getInfo({ commit }) {
+        let role = getToken()
+        getInfo(role).then((response) => {
+            return new Promise((resolve, reject) => {
+                let { name, avatar, introduction, roles } = response;
+                commit('SET_NAME', name);
+                commit('SET_AVATAR', avatar)
+                commit('SET_INTRODUCTION', introduction)
+                commit('SET_ROLES', roles)
+                resolve();
+            }).catch(err => {
+                reject(err)
+            })
+
+        })
 
     }
 }
@@ -50,6 +68,7 @@ const actions = {
 const user = {
     namespaced: true,
     state,
+    getters,
     mutations,
     actions
 }
