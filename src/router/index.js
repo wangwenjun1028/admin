@@ -10,11 +10,13 @@ import NotFount from '@/views/404.vue'
 Vue.use(VueRouter);
 
 const routes = [
+
     {
         path: '/',
         name: 'layout',
         component: Layout
-    }, {
+    },
+    {
         path: '/layout',
         name: 'layout',
         component: Layout
@@ -28,6 +30,26 @@ const routes = [
         component: NotFount
     }
 ]
+
+export const constantRoutes = [{
+    path: '/',
+    name: 'layout',
+    component: Layout
+},
+{
+    path: '/layout',
+    name: 'layout',
+    component: Layout
+}, {
+    path: '/login',
+    name: 'login',
+    component: Login
+}, {
+    path: '*',
+    name: '404',
+    component: NotFount
+}]
+
 const router = new VueRouter({
     routes,
     mode: 'history',
@@ -49,8 +71,12 @@ router.beforeEach((to, from, next) => {
                 })
             }
         }
-    } else {//未登录
-        next('/login')
+    } else {
+        if (to.path == '/login') {
+            next()
+        } else {
+            next('/login')
+        }
     }
 })
 
